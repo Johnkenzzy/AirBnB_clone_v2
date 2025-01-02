@@ -135,10 +135,8 @@ class HBNBCommand(cmd.Cmd):
                     v = v[1:-1].replace('\\"', '"').replace('_', ' ')
                 elif '.' in v and re.fullmatch(r"-?\d+(\.\d+)?", v):
                     v = float(v)
-                    print(type(v))
                 elif v.isdigit():
                     v = int(v)
-                    print(type(v))
                 else:
                     continue
                 dict_args[k] = v
