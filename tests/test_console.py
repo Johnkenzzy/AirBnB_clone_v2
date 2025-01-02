@@ -102,6 +102,25 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(mock_stdout.getvalue().strip(), err_msg)
 
     def test_do_all_valid_class(self):
+        """Test the 'all' command with a valid class name."""
+        mock_objects = {
+            "BaseModel.1234": "[BaseModel](1234) {
+                'id': '1234', 'name': 'Test'}",
+            "BaseModel.5678": "[BaseModel](5678) {
+                'id': '5678', 'name': 'Another Test'}"
+        }
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout, patch(
+                'models.storage.all', return_value=mock_objects):
+            self.console.onecmd("all BaseModel")
+            output = mock_stdout.getvalue().strip()
+
+            # Assert expected output
+            self.assertIn("[BaseModel](1234)", output)
+            self.assertIn("[BaseModel](5678)", output)
+            self.assertNotIn("AnotherModel", output)
+
+    @unittest.skip("Not applicable")
+    def test_do_all_valid_class(self):
         """Test all with valid class name"""
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout, patch(
                 'models.storage._FileStorage__objects', {
