@@ -1,3 +1,6 @@
+"""
+Unittest for HBNB console commands
+"""
 import unittest
 from unittest.mock import patch, MagicMock
 from io import StringIO
