@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 Unittest for HBNB console commands
 """
@@ -107,9 +108,9 @@ class TestHBNBCommand(unittest.TestCase):
     def test_do_all_valid_class(self):
         """Test the 'all' command with a valid class name."""
         mock_objects = {
-            "BaseModel.1234": "[BaseModel](1234) {
+            "BaseModel.1234": "[BaseModel](1234) {\
                 'id': '1234', 'name': 'Test'}",
-            "BaseModel.5678": "[BaseModel](5678) {
+            "BaseModel.5678": "[BaseModel](5678) {\
                 'id': '5678', 'name': 'Another Test'}"
         }
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout, patch(
