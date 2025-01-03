@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
             for item in tup_args:
                 k, v = item.split('=', 1)
                 if v.startswith('"') and v.endswith('"'):
-                    v = v[1:-1].replace('"', '').replace('_', ' ')
+                    v = v[1:-1].replace("\"", "").replace('_', ' ')
                 elif '.' in v: # and re.fullmatch(r"-?\d+(\.\d+)?", v):
                     v = float(v)
                 elif v.isdigit():
