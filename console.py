@@ -135,10 +135,10 @@ class HBNBCommand(cmd.Cmd):
                     v = v[1:-1].replace("\"", "").replace('_', ' ')
                 elif '.' in v: # and re.fullmatch(r"-?\d+(\.\d+)?", v):
                     v = float(v)
-                elif v.isdigit():
+                else: # .isdigit():
                     v = int(v)
-                else:
-                    continue
+                # else:
+                    # continue
                 dict_args[k] = v
 
         new_instance = HBNBCommand.classes[args[0]](dict_args)
