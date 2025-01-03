@@ -141,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
                     continue
                 dict_args[k] = v
 
-        new_instance = HBNBCommand.classes[args[0]]()
+        new_instance = HBNBCommand.classes[args[0]](dict_args)
         if dict_args:
             for k, v in dict_args.items():
                 setattr(new_instance, k, v)
