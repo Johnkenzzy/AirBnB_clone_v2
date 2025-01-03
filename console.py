@@ -133,15 +133,13 @@ class HBNBCommand(cmd.Cmd):
                 k, v = item.split('=', 1)
                 if v.startswith('"') and v.endswith('"'):
                     v = v[1:-1].replace("\"", "").replace('_', ' ')
-                elif '.' in v: # and re.fullmatch(r"-?\d+(\.\d+)?", v):
+                elif '.' in v and re.fullmatch(r"-?\d+(\.\d+)?", v):
                     v = float(v)
-                else: # .isdigit():
+                else:
                     v = int(v)
-                # else:
-                    # continue
                 dict_args[k] = v
 
-        new_instance = HBNBCommand.classes[args[0]](dict_args)
+        new_instance = HBNBCommand.classes[args[0]]()
         if dict_args:
             for k, v in dict_args.items():
                 setattr(new_instance, k, v)
