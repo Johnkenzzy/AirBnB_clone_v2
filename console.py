@@ -133,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
                 k, v = item.split('=', 1)
                 if v.startswith('"') and v.endswith('"'):
                     v = v[1:-1].replace('\\"', '"').replace('_', ' ')
-                elif '.' in v and re.fullmatch(r"-?\d+(\.\d+)?", v):
+                elif '.' in v: # and re.fullmatch(r"-?\d+(\.\d+)?", v):
                     v = float(v)
                 elif v.isdigit():
                     v = int(v)
