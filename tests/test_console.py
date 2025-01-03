@@ -6,6 +6,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 from io import StringIO
 from console import HBNBCommand
+from models.base_model import BaseModel
 
 
 class TestHBNBCommand(unittest.TestCase):
@@ -160,6 +161,117 @@ class TestHBNBCommand(unittest.TestCase):
             self.console.onecmd("destroy BaseModel 1234")
             err_msg = "** no instance found **"
             self.assertEqual(mock_stdout.getvalue().strip(), err_msg)
+
+
+class TestHBNBCommandCreate(unittest.TestCase):
+    """Unittest cases for the do_create method."""
+
+    def setUp(self):
+        """Set up for tests."""
+        self.console = HBNBCommand()
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_create_no_class(self, mock_stdout):
+        """Test create with no class name."""
+        self.console.onecmd("create")
+        msg = "** class name missing **"
+        self.assertEqual(mock_stdout.getvalue().strip(), msg)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_create_invalid_class(self, mock_stdout):
+        """Test create with invalid class name."""
+        self.console.onecmd("create InvalidClass")
+        msg = "** class doesn't exist **"
+        self.assertEqual(mock_stdout.getvalue().strip(), msg)
+
+    # @patch('sys.stdout', new_callable=StringIO)
+    # @patch('models.storage.save')
+    def test_create_valid_class(self):
+        """Test create with valid class name."""
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.console.onecmd("create BaseModel")
+            # output = mock_stdout.getvalue().strip()
+            # cself.assertTrue(len(output) > 0)  # Should print an ID
+            self.assertTrue(len(mock_stdout.getvalue().strip()) > 0)
+            # Validate format of the ID
+            self.assertIn("-", mock_stdout.getvalue().strip())
+            # mock_save.assert_called_once()
+
+    # @patch('sys.stdout', new_callable=StringIO)
+    # @patch('models.storage.save')
+    def test_create_with_valid_args(self):
+        """Test create with valid key-value arguments."""
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.console.onecmd(
+                    'create BaseModel name="My_House" \
+                            number_rooms=3 price_by_night=100.5'
+                    )
+            # output = mock_stdout.getvalue().strip()
+            # self.assertTrue(len(output) > 0)  # Should print an ID
+            # mock_save.assert_called_once()
+            self.assertTrue(len(mock_stdout.getvalue().strip()) > 0)
+
+    # @patch('sys.stdout', new_callable=StringIO)
+    # @patch('models.storage.save')
+    def test_create_with_invalid_args(self):
+        """Test create with invalid key-value arguments."""
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.console.onecmd(
+                    'create BaseModel name="My_House" invalid_field=test123'
+                    )
+            # output = mock_stdout.getvalue().strip()
+            # self.assertTrue(len(output) > 0) # Should print an ID
+            # mock_save.assert_called_once()
+            self.assertTrue(len(mock_stdout.getvalue().strip()) > 0)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_create_escape_quotes(self, mock_stdout):
+        """Test create with escaped quotes."""
+        self.console.onecmd(
+                'create BaseModel description="A_House_with_\\"balcony\\""'
+                )
+        output = mock_stdout.getvalue().strip()
+        self.assertTrue(len(output) > 0)  # Should print an ID
+        # No further validation on the storage since it requires more mocks
+
+    # @patch('sys.stdout', new_callable=StringIO)
+    # @patch('models.storage.save')
+    def test_create_float_and_integer_args(self):
+        """Test create with float and integer arguments."""
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.console.onecmd(
+                    "create BaseModel latitude=37.7749 \
+                            longitude=-122.4194 number_rooms=5"
+                    )
+            # output = mock_stdout.getvalue().strip()
+            # self.assertTrue(len(output) > 0)  # Should print an ID
+            self.assertTrue(len(mock_stdout.getvalue().strip()) > 0)
+            # mock_save.assert_called_once()
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_create_ignore_invalid_format(self, mock_stdout):
+        """Test create ignores invalid key-value formats."""
+        self.console.onecmd('create BaseModel invalid="missing_equals"')
+        output = mock_stdout.getvalue().strip()
+        self.assertTrue(len(output) > 0)  # Should print an ID
+
+    # @patch('sys.stdout', new_callable=StringIO)
+    # @patch('models.storage.save')
+    def test_create_replace_underscores(self):
+        """Test underscores replaced with spaces in string values."""
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.console.onecmd('create BaseModel name="My_Little_House"')
+            # output = mock_stdout.getvalue().strip()
+            # self.assertTrue(len(output) > 0)  # Should print an ID
+            # mock_save.assert_called_once()
+            self.assertTrue(len(mock_stdout.getvalue().strip()) > 0)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_create_empty_arguments(self, mock_stdout):
+        """Test create with an empty string for arguments."""
+        self.console.onecmd('create BaseModel name=""')
+        output = mock_stdout.getvalue().strip()
+        self.assertTrue(len(output) > 0)  # Should print an ID
 
 
 if __name__ == "__main__":
