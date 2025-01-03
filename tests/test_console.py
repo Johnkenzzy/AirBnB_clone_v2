@@ -202,10 +202,9 @@ class TestHBNBCommandCreate(unittest.TestCase):
     def test_create_with_valid_args(self):
         """Test create with valid key-value arguments."""
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-            self.console.onecmd(
-                    'create BaseModel name="My_House" \
-                            number_rooms=3 price_by_night=100.5'
-                    )
+            cmmd = 'create BaseModel '
+            args = 'name="My_House" number_rooms=3 price_by_night=100.5'
+            self.console.onecmd(cmmd + args)
             # output = mock_stdout.getvalue().strip()
             # self.assertTrue(len(output) > 0)  # Should print an ID
             # mock_save.assert_called_once()
@@ -216,9 +215,9 @@ class TestHBNBCommandCreate(unittest.TestCase):
     def test_create_with_invalid_args(self):
         """Test create with invalid key-value arguments."""
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-            self.console.onecmd(
-                    'create BaseModel name="My_House" invalid_field=test123'
-                    )
+            cmmd = 'create BaseModel '
+            args = 'name="My_House" invalid_field=test123'
+            self.console.onecmd(cmmd + args)
             # output = mock_stdout.getvalue().strip()
             # self.assertTrue(len(output) > 0) # Should print an ID
             # mock_save.assert_called_once()
@@ -239,10 +238,9 @@ class TestHBNBCommandCreate(unittest.TestCase):
     def test_create_float_and_integer_args(self):
         """Test create with float and integer arguments."""
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-            self.console.onecmd(
-                    "create BaseModel latitude=37.7749 \
-                            longitude=-122.4194 number_rooms=5"
-                    )
+            cmmd = "create BaseModel "
+            args = "latitude=37.7749 longitude=-122.4194 number_rooms=5"
+            self.console.onecmd(cmmd + args)
             # output = mock_stdout.getvalue().strip()
             # self.assertTrue(len(output) > 0)  # Should print an ID
             self.assertTrue(len(mock_stdout.getvalue().strip()) > 0)
