@@ -1,7 +1,10 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
 import unittest
+from unittest.mock import MagicMock
 from models.base_model import BaseModel
+from models.state import State
+from models.engine.file_storage import FileStorage
 from models import storage
 import os
 
@@ -21,7 +24,7 @@ class test_fileStorage(unittest.TestCase):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
-        except:
+        except Exception:
             pass
 
     def test_obj_list_empty(self):
@@ -107,3 +110,69 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+
+class TestFileStorage(unittest.TestCase):
+    def setUp(self):
+        """Set up the testing environment."""
+        self.storage = FileStorage()
+        self.base_model = BaseModel()
+        self.state = State()
+        self.state.name = "California"
+        self.storage._FileStorage__objects = {
+            "BaseModel.1234": self.base_model,
+            "State.5678": self.state,
+        }
+
+    def test_all_no_cls(self):
+        """Test `all` method with no class filter."""
+        all_objects = self.storage.all()
+        self.assertEqual(len(all_objects), 2)
+        self.assertIn("BaseModel.1234", all_objects)
+        self.assertIn("State.5678", all_objects)
+
+    def test_all_with_cls(self):
+        """Test `all` method with a class filter."""
+        filtered_objects = self.storage.all(State)
+        self.assertEqual(len(filtered_objects), 1)
+        self.assertIn("State.5678", filtered_objects)
+        self.assertNotIn("BaseModel.1234", filtered_objects)
+
+    def test_all_with_nonexistent_cls(self):
+        """Test `all` method with a class that doesn't exist in storage."""
+        class FakeClass:
+            pass
+
+        filtered_objects = self.storage.all(FakeClass)
+        self.assertEqual(len(filtered_objects), 0)
+
+    def test_delete_existing_object(self):
+        """Test `delete` method with an existing object."""
+        self.storage.delete(self.base_model)
+        all_objects = self.storage.all()
+        self.assertNotIn("BaseModel.1234", all_objects)
+        self.assertIn("State.5678", all_objects)
+
+    def test_delete_nonexistent_object(self):
+        """Test `delete` method with an object not in storage."""
+        class FakeObject:
+            pass
+
+        fake_obj = FakeObject()
+        self.storage.delete(fake_obj)
+        all_objects = self.storage.all()
+        self.assertEqual(len(all_objects), 2)
+        self.assertIn("BaseModel.1234", all_objects)
+        self.assertIn("State.5678", all_objects)
+
+    def test_delete_with_none(self):
+        """Test `delete` method with None."""
+        self.storage.delete(None)
+        all_objects = self.storage.all()
+        self.assertEqual(len(all_objects), 2)
+        self.assertIn("BaseModel.1234", all_objects)
+        self.assertIn("State.5678", all_objects)
+
+
+if __name__ == "__main__":
+    unittest.main()
