@@ -31,7 +31,8 @@ class DBStorage:
 
         # Drop all tables if env var HBNB_ENV is 'test'
         if os.getenv('HBNB_ENV', 'default_env') == 'test':
-            self.drop_all_tables()
+            Base.metadata.drop_all(self.__engine)
+            # self.drop_all_tables()
 
     def all(self, cls=None):
         """Return all objects depending on the class"""
@@ -54,6 +55,8 @@ class DBStorage:
         """Adds the object to current database session"""
         if obj:
             self.__session.add(obj)
+        else:
+            return
 
     def save(self):
         """Commit all changes of the current database session"""
@@ -61,8 +64,10 @@ class DBStorage:
 
     def delete(self, obj=None):
         """Delete an object from the current database session"""
-        if obj is not None:
+        if obj and hasattr(obj, '_sa_instance_state'):
             self.__session.delete(obj)
+        else:
+            return
 
     def reload(self):
         """Loads the database into active session"""
