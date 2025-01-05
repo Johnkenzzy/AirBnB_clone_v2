@@ -146,9 +146,9 @@ class HBNBCommand(cmd.Cmd):
             for k, v in dict_args.items():
                 setattr(new_instance, k, v)
 
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -224,19 +224,23 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
+        args = args.strip()  # Remove leading/trailing whitespace
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            session_objs = storage.all(HBNBCommand.classes[args])
+        else:
+            session_objs = storage.all()
+            """for k, v in session_objs.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in session_objs.items():
                 print_list.append(str(v))
-
+            """
+        for k, v in session_objs.items():
+            print_list.append(str(v))
         print(str(print_list).replace('\"', ''))
 
     def help_all(self):
@@ -247,9 +251,12 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        session_objs = storage.all(args)
+        count = len(session_objs)
+        """for k, v in session_objs.items():
             if args == k.split('.')[0]:
                 count += 1
+        """
         print(count)
 
     def help_count(self):
