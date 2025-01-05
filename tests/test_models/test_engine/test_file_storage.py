@@ -188,6 +188,7 @@ class TestFileStorage(unittest.TestCase):
         """Test `all` method with a class that doesn't exist in storage."""
         if store == 'db':
             return
+
         class FakeClass:
             pass
 
@@ -207,6 +208,7 @@ class TestFileStorage(unittest.TestCase):
         """Test `delete` method with an object not in storage."""
         if store == 'db':
             return
+
         class FakeObject:
             pass
 

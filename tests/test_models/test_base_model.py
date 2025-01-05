@@ -68,7 +68,7 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
                          i.__dict__))
 
-    @unittest.skip("Not applicable")    
+    @unittest.skip("Not applicable")
     def test_todict(self):
         """ Test todict conversion method """
         i = self.value()

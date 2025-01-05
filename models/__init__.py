@@ -3,7 +3,7 @@
 import os
 
 
-if os.getenv('HBNB_TYPE_STORAGE', default='default_storage') == 'db':
+if os.getenv('HBNB_TYPE_STORAGE', 'default_storage') == 'db':
     from models.engine.db_storage import DBStorage
     storage = DBStorage()
     storage.reload()
