@@ -20,4 +20,6 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     user = relationship('User', back_populates='places')
     cities = relationship('City', back_populates='places')
+    reviews = relationship(
+            'Review', back_populates='place', cascade='all, delete-orphan')
     # amenity_ids = []
