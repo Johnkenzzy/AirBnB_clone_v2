@@ -1,3 +1,8 @@
+#!/usr/bin/python3
+"""
+Automate deployment to web servers
+"""
+
 from fabric.api import env, local, put, run
 from datetime import datetime
 import os
