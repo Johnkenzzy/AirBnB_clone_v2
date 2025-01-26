@@ -2,7 +2,7 @@
 """
 Fabric script defining the function do_deploy
 """
-from fabric.api import env, put, run
+from fabric.api import env, put, run, sudo
 import os
 
 # Define the web servers' IPs
@@ -33,17 +33,17 @@ def do_deploy(archive_path):
         put(archive_path, remote_path)
 
         # Uncompress the archive to the release folder
-        run(f"mkdir -p {release_folder}")
-        run(f"tar -xzf {remote_path} -C {release_folder}")
-        run(f"rm {remote_path}")
+        sudo(f"mkdir -p {release_folder}")
+        sudo(f"tar -xzf {remote_path} -C {release_folder}")
+        sudo(f"rm {remote_path}")
 
         # Move the uncompressed content to the proper directory
-        run(f"mv {release_folder}/web_static/* {release_folder}/")
-        run(f"rm -rf {release_folder}/web_static")
+        sudo(f"mv {release_folder}/web_static/* {release_folder}/")
+        sudo(f"rm -rf {release_folder}/web_static")
 
         # Delete the old symbolic link and create a new one
-        run("rm -rf /data/web_static/current")
-        run(f"ln -s {release_folder} /data/web_static/current")
+        sudo("rm -rf /data/web_static/current")
+        sudo(f"ln -s {release_folder} /data/web_static/current")
 
         return True
 
