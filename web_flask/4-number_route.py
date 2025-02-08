@@ -28,10 +28,9 @@ def python(text):
     return "Python " + text.replace("_", " ")
 
 
-@app.route("/number/<n>", strict_slashes=False)
+@app.route("/number/<int:n>", strict_slashes=False)
 def number(n):
-    if n.isdigit() or (n.startswith('-') and n[1:].isdigit()):
-        return f"{n} is a number"
+    return f"{n} is a number"
 
 
 if __name__ == "__main__":
