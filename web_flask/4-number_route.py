@@ -30,7 +30,7 @@ def python(text):
 
 @app.route("/number/<n>", strict_slashes=False)
 def number(n):
-    if isinstance(int(n), int):
+    if n.isdigit() or (n.startswith('-') and n[1:].isdigit()):
         return f"{n} is a number"
 
 
