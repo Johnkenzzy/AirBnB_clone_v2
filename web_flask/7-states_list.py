@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-The airbnb flask app package instantiation
+The airbnb flask app package instantiation and routing
 """
 from flask import Flask, render_template
 from models import storage, State
