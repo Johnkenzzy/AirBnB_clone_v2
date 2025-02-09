@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 """ Amenity Module for HBNB project """
-from models.base_model import BaseModel, Base
+from models import BaseModel, Base, Place
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.place import Place
 
 
 class Amenity(BaseModel, Base):

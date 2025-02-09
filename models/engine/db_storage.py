@@ -5,13 +5,7 @@ Database storage engine model
 import os
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import Base
-from models.user import User
-from models.state import State
-from models.city import City
-from models.place import Place
-from models.amenity import Amenity
-from models.review import Review
+from models import Base, User, State, City, Place, Amenity, Review
 
 user = os.getenv('HBNB_MYSQL_USER', "default_usr")
 psswd = os.getenv('HBNB_MYSQL_PWD', "default_pwd")
@@ -74,5 +68,8 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(
                 bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(session_factory)
-        self.__session = Session()
+        self.__session = scoped_session(session_factory)
+
+    def close(self):
+        """closes the current session"""
+        self.__session.remove()
