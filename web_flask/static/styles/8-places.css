@@ -26,10 +26,16 @@ article {
 	display: flex;
 	flex-direction: row;
 	position: relative;
-	justify-content: right;
+	justify-content: space-between;
 	align-items: center;
 	width: 100%;
 	padding: 10px;
+}
+
+.price_header h2 {
+	margin: 0;
+	font-size: 30px;
+	text-align: left;
 }
 
 .price_by_night {
@@ -48,7 +54,7 @@ article {
 }
 
 .information {
-	display: block;
+	display: flex;
 	height: 80px;
 	width: 100%;
 	border-top: 1px solid #DDDDDD;
@@ -94,28 +100,34 @@ article h2 {
 }
 
 .places article .information .max_guest {
-	display: inline-block;
+	display: flex;
+	flex-direction: column;
 	background-image: url("../images/icon_group.png");
 	background-repeat: no-repeat;
-	background-position: center;
+	background-position: top;
 	width: 100px;
 	height: 50px;
+	padding-top: 50px;
 }
 
 .places article .information .number_rooms {
-	display: inline-block;
+	display: flex;
+	flex-direction: column;
 	background-image: url("../images/icon_bed.png");
 	background-repeat: no-repeat;
-	background-position: center;
+	background-position: top;
     width: 100px;
     height: 50px;
+	padding-top: 50px;
 }
 
 .places article .information .number_bathrooms {
-	display: inline-block;
+	display: flex;
+	flex-direction: column;
 	background-image: url("../images/icon_bath.png");
 	background-repeat: no-repeat;
-	background-position: center;
+	background-position: top;
     width: 100px;
     height: 50px;
+	padding-top: 50px;
 }
